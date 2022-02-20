@@ -2,42 +2,34 @@ require('dotenv').config()
 
 const express = require('express')
 const app = express()
-const jwt = require('jsonwebtoken')
+const {authenticateToken, refreshToken} = require("./controllers/auth.controller");
+const {generateAccessToken, generateRefreshToken, deleteToken} = require("./services/auth.service");
+const {findUserRecipes, findAllRecipes} = require("./services/recipe.service");
 
 app.use(express.json())
 
-const recipes = [{
-    username: 'tom',
-    title: 'recipe 1',
-},
-    {
-        username: 'jim',
-        title: 'recipe 2'
-    }]
-
-app.get('/recipes', authenticateToken, (req, res) => {
-    res.json(recipes.filter(recipe => recipe.username === req.user.name))
+app.get('/recipes', async (req, res) => {
+    res.json(await findAllRecipes())
 })
 
-app.post('/login', (req, res) => {
+app.get('/user/recipes', authenticateToken, async (req, res) => {
+    res.json(await findUserRecipes(req.user))
+})
+
+app.post('/token', refreshToken, (req, res) => {
+})
+
+app.delete('/logout', (req, res) => {
+    deleteToken(req, res)
+})
+
+app.post('/login', async (req, res) => {
     //authenticate user
 
     const username = req.body.username
     const user = {name: username}
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
-    res.json({accessToken: accessToken})
+    const [accessToken, refreshToken] = await Promise.all([generateAccessToken(user), generateRefreshToken(user)])
+    res.json({accessToken: accessToken, refreshToken: refreshToken})
 })
-
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) return res.sendStatus(401)
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET,(err, user) => {
-        if (err) return res.sendStatus(403)
-        req.user = user
-        next()
-    })
-}
 
 app.listen(process.env.PORT)
