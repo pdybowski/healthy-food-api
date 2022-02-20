@@ -18,8 +18,9 @@
   },
   "homepage": "https://github.com/pdybowski/healthy-food-api#readme",
   "dependencies": {
-    "bcrypt": "^5.0.1",
-    "express": "^4.17.3"
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
