@@ -11,11 +11,15 @@ module.exports = {
     recipes: [
         {
             username: 'tom',
+            userId: 1,
             title: 'recipe 1',
+            recipeId: 1,
         },
         {
             username: 'jim',
-            title: 'recipe 2'
+            userId: 2,
+            title: 'recipe 2',
+            recipeId: 2
         }
     ]
 }

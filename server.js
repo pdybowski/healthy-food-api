@@ -5,7 +5,7 @@ const app = express()
 const {authenticateToken, refreshToken} = require("./controllers/auth.controller");
 const {deleteToken, loginUser, setUser, authUser, authRole} = require("./services/auth.service");
 const {createUser, findAllUsers} = require("./services/users.service");
-const {findUserRecipes, findAllRecipes} = require("./services/recipe.service");
+const {findUserRecipes, findAllRecipes, setRecipe, authDeleteRecipe} = require("./services/recipe.service");
 const {ROLE} = require("./data");
 
 app.use(express.json())
@@ -23,6 +23,14 @@ app.get('/recipes', async (req, res) => {
 
 app.get('/user/recipes', setUser, authUser, authenticateToken, async (req, res) => {
     res.json(await findUserRecipes(req.user))
+})
+
+app.get('/recipes/:recipeId', setRecipe, (req,res) => {
+    res.json(req.recipes)
+})
+
+app.delete('/recipes/:recipeId', setRecipe, setUser, authUser, authDeleteRecipe, (req,res) => {
+    res.send('Deleted recipe')
 })
 
 app.post('/token', refreshToken, (req, res) => {
