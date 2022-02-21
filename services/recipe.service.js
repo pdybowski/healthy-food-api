@@ -1,21 +1,22 @@
-//should be from database
-const {recipes, ROLE} = require('../data')
+const {findRecipeById} = require("./recipe.service");
 
 exports.findAllRecipes = async () => {
-    return recipes;
+    //TODO
+}
+exports.findRecipeById = async (recipeId) => {
+    //TODO
 }
 
 exports.findUserRecipes = async (user) => {
-    return recipes.filter(recipe => recipe.username === user.name);
+    //TODO
 }
 
 exports.setRecipe = (req, res, next) => {
     const recipeId = parseInt(req.params.recipeId)
-    req.recipe = recipes.find(recipe => recipe.recipeId === recipeId)
+    req.recipe = findRecipeById(recipeId)
 
     if (req.recipe == null) {
-        res.status(404)
-        return res.send('Recipe not found')
+        return res.status(404).send('Recipe not found')
     }
     next()
 }

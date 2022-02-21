@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const {findUserById} = require("./users.service");
 
-//should be from database
-let {refreshTokens, users} = require('../data')
+let {refreshTokens} = undefined //TODO should be from database
 
 generateAccessToken = async (user) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30m'}, null)
@@ -27,7 +27,7 @@ exports.deleteToken = (req, res, next) => {
 exports.setUser = (req, res, next) => {
     const userId = req.body.id
     if (userId) {
-        req.user = users.find(user => user.id === userId)
+        req.user = findUserById(userId)
     }
     next()
 }
@@ -42,8 +42,7 @@ exports.authUser = (req, res, next) => {
 exports.authRole = (role) => {
     return (req, res, next) => {
         if (req.user.role !== role) {
-            res.status(401)
-            return res.send('Not allowed')
+            return res.status(401).send('Not allowed')
         }
         next()
     }
