@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const UNITS = [
+const UNIT_TYPES = [
   'kg',
   'g',
   'ml',
@@ -27,7 +27,7 @@ const ingredientSchema = Schema({
     unit: {
       type: String,
       required: true,
-      enum: UNITS,
+      enum: UNIT_TYPES,
     },
   },
 });
