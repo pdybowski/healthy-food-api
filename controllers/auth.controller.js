@@ -1,38 +1,17 @@
-const jwt = require("jsonwebtoken");
-const {generateAccessToken, refreshTokenExist} = require("../services/auth.service");
-const {UnauthorizedError, ForbiddenError} = require("../helpers/errorHandlers");
+const authService = require("../services/auth.service");
 
-exports.authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) {
-        throw new UnauthorizedError()
-    }
+const responseWithToken = (res, data) => {
+  return res.header("X-Auth-Token", data.token).json(data);
+};
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) {
-            throw new ForbiddenError()
-        }
-        req.user = user
-        next()
-    }, null)
-}
+exports.login = (req, res, next) => {
+  try {
+    const data = await authService.login(req.body); // TODO probably broken - its just an example
+    return responseWithToken(res, data); //TODO
+  } catch (error) {
+    next(error);
+  }
+};
 
-exports.refreshToken = async (req, res, next) => {
-    const refreshToken = req.body.token
-    if (refreshToken == null) {
-        throw new UnauthorizedError()
-    }
-    const tokenExist = await refreshTokenExist(refreshToken);
-    if (tokenExist) {
-        throw new ForbiddenError()
-    }
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
-        if (err) {
-            throw new ForbiddenError()
-        }
-        const accessToken = await generateAccessToken({name: user.name})
-        res.json({accessToken: accessToken})
-        next()
-    }, null)
-}
+// TODO register
+// TODO logout

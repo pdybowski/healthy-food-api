@@ -1,9 +1,9 @@
 //! example only
-// exports.insertExample = async (req, res, next) => {
-//     try {  
-//       const example = await ExampleService.insertExample(req);
-//       return res.send(example);
-//     } catch (error) {
-//       next(error);
-//     }
+// exports.login = async (req, res, next) => {
+//   try {
+//     const data = await AuthService.login(req);
+//     return res.send(data);
+//   } catch (error) {
+//     next(error);
+//   }
 // };

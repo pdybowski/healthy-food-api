@@ -1,67 +1,43 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const {findUserById} = require("./users.service");
-const {UnauthorizedError, ForbiddenError, BadRequestError} = require("../helpers/errorHandlers");
+const {
+  BadRequestError,
+  UnauthorizedError,
+  InernalServerError,
+} = require("../helpers/errorHandlers");
+const { hashInput, hashCompare } = require("../hash");
 
-let {refreshTokens} = undefined //TODO should be from database
+let { refreshTokens } = undefined; //TODO should be from database
 
 generateAccessToken = async (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30m'}, null)
-}
+  return jwt.sign(
+    user,
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "30m" },
+    null
+  );
+};
 
 generateRefreshToken = async (user) => {
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, null, null);
-    refreshTokens.push(refreshToken);
-    return refreshToken
-}
+  const refreshToken = jwt.sign(
+    user,
+    process.env.REFRESH_TOKEN_SECRET,
+    null,
+    null
+  );
+  refreshTokens.push(refreshToken);
+  return refreshToken;
+};
 
-exports.refreshTokenExist = async (refreshToken) => {
-    return !refreshTokens.includes(refreshToken);
-}
+exports.login = async (req, res, next) => {
+  //TODO validate req.body object and response with error if doesnt exist
 
-exports.deleteToken = (req, res, next) => {
-    refreshTokens = refreshTokens.filter(token => token !== req.body.token)
-    res.sendStatus(204)
-    next()
-}
+  const bcrypt = await hashCompare(req.body.password, req.user.password);
+  if (!bcrypt) throw new UnauthorizedError("Invalid email or password.");
 
-exports.setUser = (req, res, next) => {
-    const userId = req.body.id
-    if (userId) {
-        req.user = findUserById(userId)
-    }
-    next()
-}
+  const [accessToken, refreshToken] = await Promise.all([
+    generateAccessToken(req.user),
+    generateRefreshToken(req.user),
+  ]);
 
-exports.authUser = (req, res, next) => {
-    if (req.user == null) {
-        throw new ForbiddenError('You need to sign in')
-    }
-    next()
-}
-
-exports.authRole = (role) => {
-    return (req, res, next) => {
-        if (req.user.role !== role) {
-            throw new UnauthorizedError('Not allowed')
-        }
-        next()
-    }
-}
-
-exports.loginUser = async (req, res, next) => {
-    if (req.user == null) {
-        throw new BadRequestError('Cannot find user')
-    }
-    try {
-        if (await bcrypt.compare(req.body.password, req.user.password)) {
-            const [accessToken, refreshToken] = await Promise.all([generateAccessToken(req.user), generateRefreshToken(req.user)])
-            res.json({accessToken: accessToken, refreshToken: refreshToken})
-            next()
-        } else {
-            res.send('Not Allowed')
-        }
-    } catch {
-        res.status(500).send()
-    }
-}
+  return { accessToken: accessToken, refreshToken: refreshToken }; //TODO probably we we should return also userRole
+};
