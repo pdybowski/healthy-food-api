@@ -24,14 +24,38 @@ exports.deleteToken = (req, res, next) => {
     next()
 }
 
-exports.authUser = async (req, res, next) => {
-    const user = users.find(user => user.name === req.body.name)
-    if (user == null) {
+exports.setUser = (req, res, next) => {
+    const userId = req.body.id
+    if (userId) {
+        req.user = users.find(user => user.id === userId)
+    }
+    next()
+}
+
+exports.authUser = (req, res, next) => {
+    if (req.user == null) {
+        return res.status(403).send('You need to sign in')
+    }
+    next()
+}
+
+exports.authRole = (role) => {
+    return (req, res, next) => {
+        if (req.user.role !== role) {
+            res.status(401)
+            return res.send('Not allowed')
+        }
+        next()
+    }
+}
+
+exports.loginUser = async (req, res, next) => {
+    if (req.user == null) {
         return res.status(400).send('Cannot find user')
     }
     try {
-        if (await bcrypt.compare(req.body.password, user.password)) {
-            const [accessToken, refreshToken] = await Promise.all([generateAccessToken(user), generateRefreshToken(user)])
+        if (await bcrypt.compare(req.body.password, req.user.password)) {
+            const [accessToken, refreshToken] = await Promise.all([generateAccessToken(req.user), generateRefreshToken(req.user)])
             res.json({accessToken: accessToken, refreshToken: refreshToken})
             next()
         } else {

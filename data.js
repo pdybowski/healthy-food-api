@@ -7,11 +7,7 @@ const ROLE = {
 module.exports = {
     ROLE: ROLE,
     refreshTokens: [],
-    users: [
-        {id:1, name: 'tom', role: ROLE.USER},
-        {id:2, name: 'bill', role: ROLE.ADMIN},
-        {id:3, name: 'jim', role: ROLE.USER}
-    ],
+    users: [],
     recipes: [
         {
             username: 'tom',
