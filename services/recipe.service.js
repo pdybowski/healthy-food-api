@@ -19,18 +19,3 @@ exports.setRecipe = (req, res, next) => {
     }
     next()
 }
-
-const canDeleteRecipe = (user, recipe) => {
-    return (
-        user.role === ROLE.ADMIN || recipe.userId === user.id
-    )
-}
-
-exports.authDeleteRecipe = (req, res, next) => {
-    if (!canDeleteRecipe(req.user, req.recipe)) {
-        res.status(401)
-        return res.send('Not Allowed')
-    }
-
-    next()
-}
