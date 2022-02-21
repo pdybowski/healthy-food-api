@@ -1,4 +1,5 @@
 const {findRecipeById} = require("./recipe.service");
+const {NotFoundError} = require("../helpers/errorHandlers");
 
 exports.findAllRecipes = async () => {
     //TODO
@@ -16,7 +17,7 @@ exports.setRecipe = (req, res, next) => {
     req.recipe = findRecipeById(recipeId)
 
     if (req.recipe == null) {
-        return res.status(404).send('Recipe not found')
+        throw new NotFoundError('Recipe not found')
     }
     next()
 }

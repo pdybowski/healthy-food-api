@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const {findUserById} = require("./users.service");
+const {UnauthorizedError, ForbiddenError, BadRequestError} = require("../helpers/errorHandlers");
 
 let {refreshTokens} = undefined //TODO should be from database
 
@@ -34,7 +35,7 @@ exports.setUser = (req, res, next) => {
 
 exports.authUser = (req, res, next) => {
     if (req.user == null) {
-        return res.status(403).send('You need to sign in')
+        throw new ForbiddenError('You need to sign in')
     }
     next()
 }
@@ -42,7 +43,7 @@ exports.authUser = (req, res, next) => {
 exports.authRole = (role) => {
     return (req, res, next) => {
         if (req.user.role !== role) {
-            return res.status(401).send('Not allowed')
+            throw new UnauthorizedError('Not allowed')
         }
         next()
     }
@@ -50,7 +51,7 @@ exports.authRole = (role) => {
 
 exports.loginUser = async (req, res, next) => {
     if (req.user == null) {
-        return res.status(400).send('Cannot find user')
+        throw new BadRequestError('Cannot find user')
     }
     try {
         if (await bcrypt.compare(req.body.password, req.user.password)) {
