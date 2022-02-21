@@ -3,8 +3,8 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const {authenticateToken, refreshToken} = require("./controllers/auth.controller");
-const {deleteToken} = require("./services/auth.service");
-const {authUser, createUser, findAllUsers} = require("./services/users.service");
+const {deleteToken, authUser} = require("./services/auth.service");
+const {createUser, findAllUsers} = require("./services/users.service");
 const {findUserRecipes, findAllRecipes} = require("./services/recipe.service");
 
 app.use(express.json())

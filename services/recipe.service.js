@@ -1,14 +1,5 @@
-//should be stored in database
-const recipes = [
-    {
-        username: 'tom',
-        title: 'recipe 1',
-    },
-    {
-        username: 'jim',
-        title: 'recipe 2'
-    }
-]
+//should be from database
+const {recipes} = require('../data')
 
 exports.findAllRecipes = async () => {
     return recipes;
