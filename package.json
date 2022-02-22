@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/pdybowski/healthy-food-api/issues"
   },
-  "homepage": "https://github.com/pdybowski/healthy-food-api#readme"
+  "homepage": "https://github.com/pdybowski/healthy-food-api#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.3",
+    "nodemailer": "^6.7.2"
+  }
 }
