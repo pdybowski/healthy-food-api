@@ -1,14 +1,11 @@
+require("dotenv").config();
+
 const mongoose = require("mongoose");
 const winston = require("winston");
-const config = require("config");
+
 
 module.exports = function () {
   mongoose
-    .connect(config.get("db"), {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    })
+    .connect(process.env.MONGODB_URI)
     .then(() => winston.info("Connected to MongoDB..."));
 };
