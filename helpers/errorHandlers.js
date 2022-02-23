@@ -52,6 +52,14 @@ class NotFoundError extends ApiError {
   }
 }
 
+class InernalServerError extends ApiError {
+  constructor(message, ...params) {
+    super(HttpStatusCode.INTERNAL_SERVER_ERROR, message, ...params);
+
+    this.name = "InternalServerError";
+  }
+}
+
 module.exports = {
   ApiError,
   BadRequestError,
@@ -59,4 +67,5 @@ module.exports = {
   ForbiddenError,
   NotFoundError,
   UnauthorizedError,
+  InernalServerError,
 };
