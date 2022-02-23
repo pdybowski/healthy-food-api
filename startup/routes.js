@@ -1,7 +1,9 @@
 const cors = require('cors')
+const express = require("express")
 
 module.exports = function (app) {
   app.use(cors());
+  app.use(express.json());
   app.use((err, req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
