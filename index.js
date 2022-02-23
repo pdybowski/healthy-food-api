@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 
 
-require("./startup/logging")(); // initialize exceptions
+// require("./startup/logging")(); // initialize exceptions
 require("./startup/routes")(app); // load route
 require("./startup/db")(); // connect to the DB
 require("./startup/config")(); // config db
