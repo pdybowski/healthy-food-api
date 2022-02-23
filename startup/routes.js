@@ -1,4 +1,5 @@
 const auth = require("../routers/auth");
+const cors = require('cors')
 module.exports = function (app) {
   app.use(cors());
   app.use((err, req, res, next) => {
