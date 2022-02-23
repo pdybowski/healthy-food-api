@@ -1,3 +1,4 @@
+const auth = require("../routers/auth");
 module.exports = function (app) {
     app.use(cors());
     app.use((err, req, res, next) => {
@@ -15,4 +16,5 @@ module.exports = function (app) {
 
     
     //place routes here ...
+    app.use('/api/auth', auth)
 }
