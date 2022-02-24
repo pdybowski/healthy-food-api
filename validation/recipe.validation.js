@@ -1,9 +1,8 @@
 const Joi = require("joi");
 Joi.objectId = require('joi-objectid')(Joi);
 
-const {ingredientValidationSchema} = require("./ingredient.validation");
-
-const MEAL_TYPES = ["breakfast", "lunch", "dinner"];
+const { ingredientValidationSchema } = require("./ingredient.validation");
+const { MEAL_TYPES } = require("../constants")
 
 const validateRecipe = (recipe) => {
     const schema = Joi.object({

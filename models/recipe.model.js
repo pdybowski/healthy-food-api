@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const {Schema} = mongoose;
-const {ingredientSchema} = require("./ingredient.model");
-
-const MEAL_TYPES = ["breakfast", "lunch", "dinner"];
+const { Schema } = mongoose;
+const { ingredientSchema } = require("./ingredient.model");
+const { MEAL_TYPES } = require("../constants")
 
 const recipeSchema = Schema(
     {
