@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,16 @@
   "bugs": {
     "url": "https://github.com/pdybowski/healthy-food-api/issues"
   },
-  "homepage": "https://github.com/pdybowski/healthy-food-api#readme"
+  "homepage": "https://github.com/pdybowski/healthy-food-api#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "jshint": "^2.13.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.2",
+    "winston": "^3.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
