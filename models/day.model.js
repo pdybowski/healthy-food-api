@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const {Schema} = mongoose;
-
-const MEAL_TYPES = ['breakfast', 'lunch', 'dinner'];
+const { Schema } = mongoose;
+const { MEAL_TYPES } = require("../constants");
 
 const daySchema = Schema({
     mealType: {
