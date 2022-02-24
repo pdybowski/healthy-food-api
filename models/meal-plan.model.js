@@ -1,15 +1,12 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const { daySchema, dayValidationSchema } = require("./day.model");
-const Joi = require("joi");
-const {ingredientValidationSchema} = require("./ingredient.model");
-Joi.objectId = require('joi-objectid')(Joi)
+const { daySchema } = require("./day.model");
 
 const mealPlanSchema = Schema(
   {
     days: {
         type: [daySchema],
-        required: true
+        required: true,
     },
     author: {
       type: Schema.Types.ObjectId,
@@ -33,18 +30,4 @@ const mealPlanSchema = Schema(
 
 const MealPlan = mongoose.model("MealPlan", mealPlanSchema);
 
-const validateMealPlan = (mealPlan) => {
-    const schema = Joi.object({
-        days: Joi.array().min(1).items(dayValidationSchema).required(),
-        author: Joi.objectId().required(),
-        title: Joi.string().trim().max(20).required(),
-        tags: Joi.array().items(Joi.string().max(10)),
-        img: Joi.binary().encoding('base64'),
-    })
-    return schema.validate(mealPlan)
-}
-
-module.exports = {
-    MealPlan,
-    validateMealPlan,
-};
+module.exports = MealPlan;
