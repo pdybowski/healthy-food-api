@@ -1,3 +1,13 @@
 node_modules/
 *.log
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+*.http
+
+
+#dotenv
 .env
