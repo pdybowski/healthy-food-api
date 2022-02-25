@@ -6,8 +6,8 @@ const emailsSchema = new mongoose.Schema({
     required: true,
   },
   email: {
-    type: email,
-    required: true,
+    type: String,
+    required: "email is required",
   },
   message: {
     type: String,
