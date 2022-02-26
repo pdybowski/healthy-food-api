@@ -18,8 +18,18 @@ const deleteUserMealPlan = async (id) => {
   return await MealPlan.deleteOne({ _id: id });
 };
 
-const createUserMealPlan = async (item) => {
-  return await item.save();
+const createUserMealPlan = async (request) => {
+  const mealPlan = new MealPlan({
+    days: request.days,
+    mealType: request.mealType,
+    recipe: request.recipe,
+    dayNumber: request.dayNumber,
+    author: request.author,
+    title: request.title,
+    tags: request.tags,
+    img: request.img,
+  });
+  return await mealPlan.save();
 };
 
 module.exports = {
