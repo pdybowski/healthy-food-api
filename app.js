@@ -17,8 +17,8 @@ console.log('DANIELA');
 app.use("/routers", authRoute);
 app.use(express.json());
 
-app.listen(8000, function () {
-  console.log("Example app listening on port 4453!");
+app.listen(3000, function () {
+  console.log("Example app listening on port 3000!");
 });
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

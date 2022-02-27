@@ -5,7 +5,6 @@ const {
   InernalServerError,
 } = require("../helpers/errorHandlers");
 const { hashInput, hashCompare } = require("../hash");
-
 let { refreshTokens } = undefined; //TODO should be from database
 
 generateAccessToken = async (user) => {

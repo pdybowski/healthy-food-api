@@ -1,4 +1,5 @@
 const authService = require("../services/auth.service");
+const AuthControlers = require ("../controllers/AuthConstrollers")
 
 const responseWithToken = (res, data) => {
   return res.header("X-Auth-Token", data.token).json(data);
@@ -15,3 +16,5 @@ exports.login = (req, res, next) => {
 
 // TODO register
 // TODO logout
+
+module.exports = router
