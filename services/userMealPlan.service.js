@@ -5,38 +5,36 @@ const getUserMealPlans = async (user_id) => {
   const mealPlan = await MealPlan.find({ author: user_id });
   if (!mealPlan) {
     throw new NotFoundError("Meal plans don't exist");
-  } else {
-    return mealPlan;
   }
+  return mealPlan;
 };
 
 const getUserMealPlan = async (id) => {
   const mealPlan = await MealPlan.findById({ _id: id });
   if (!mealPlan) {
     throw new NotFoundError("Meal plan doesn't exist");
-  } else {
-    return mealPlan;
   }
+  return mealPlan;
 };
 
 const udpateUserMealPlan = async (id, requestBody) => {
   const mealPlan = await MealPlan.findById({ _id: id });
   if (!mealPlan) {
     throw new NotFoundError("Meal plan doesn't exist");
-  } else {
-    return await MealPlan.findByIdAndUpdate({ _id: id }, requestBody, {
-      new: true,
-    });
   }
+  await MealPlan.findByIdAndUpdate({ _id: id }, requestBody, {
+    new: true,
+  });
+  return true;
 };
 
 const deleteUserMealPlan = async (id) => {
   const mealPlan = await MealPlan.findById({ _id: id });
   if (!mealPlan) {
     throw new NotFoundError("Meal plan doesn't exist");
-  } else {
-    return await MealPlan.deleteOne({ _id: id });
   }
+  await MealPlan.deleteOne({ _id: id });
+  return true;
 };
 
 const createUserMealPlan = async (request) => {
@@ -50,7 +48,8 @@ const createUserMealPlan = async (request) => {
     tags: request.tags,
     img: request.img,
   });
-  return await mealPlan.save();
+  await mealPlan.save();
+  return true;
 };
 
 module.exports = {
