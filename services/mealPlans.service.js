@@ -1,7 +1,8 @@
 const MealPlan = require("../models/meal-plan.model");
 
-const getMealPlans = async (user_id) => {
-    return await MealPlan.find({});
+const getMealPlans = async () => {
+    const allMealPlans = await MealPlan.find({});
+    return allMealPlans;
 };
 
 module.exports = {

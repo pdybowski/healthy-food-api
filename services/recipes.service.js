@@ -1,7 +1,8 @@
 const Recipe = require("../models/recipe.model");
 
-const getRecipes = async (user_id) => {
-    return await Recipe.find({});
+const getRecipes = async () => {
+    const allRecipes = await Recipe.find({});
+    return allRecipes;
 };
 
 module.exports = {
