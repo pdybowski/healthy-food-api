@@ -1,5 +1,6 @@
 const cors = require('cors')
 const express = require("express")
+const pageResourceRouter = require("../routers/pageResource.router");
 
 module.exports = function (app) {
   app.use(cors());
@@ -18,4 +19,5 @@ module.exports = function (app) {
   });
 
   //place routes here ...
+  app.use("/pageResource", pageResourceRouter);
 };
