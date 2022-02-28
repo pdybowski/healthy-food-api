@@ -4,32 +4,15 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const User = require("../models/user.model");
-
+const reset = require("../controllers/reset.controller");
 
 router.get("/", (req, res, next) => {
   res.render("forgot-password");
 });
 
-router.post("/", (req, res, next) => {
-  const { email } = req.body;
-  //make sure user exist in database
-  if (email !== User.email) {
-    res.send("User not registered");
-    return;
-  }
+router.post("/", reset.reset);
 
-  //User exist and now create One time link valid 15 minutes
-  const secret = process.env.JWT_SECRET + User.password;
-  const payload = {
-    email: User.email,
-    id: User.id,
-  };
-  const token = jwt.sign(payload, secret, { expiresIn: "15m" });
-  const link = `http://localhost:3000/reset-password/${User.id}/${token}`;
-  console.log(link);
-  res.send("Password reset link has been sent to your email...");
-});
-
+  
 router.get("/reset-password/:id/:token", (req, res, next) => {
   const { id, token } = req.params;
   //check if this id exist in database
