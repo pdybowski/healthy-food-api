@@ -1,24 +1,40 @@
-const User = require("../models/user.model");
-const jwt = require("jsonwebtoken");
+const { resetService, findService } = require("../services/resetPass.service");
 
-module.exports.reset = async (req, res, next) => {
+exports.reset = async (req, res, next) => {
   const { email } = req.body;
-  const user = User.findOne();
-  //make sure user exist in database
-  if (email !== user.email) {
-    res.send("User not registered");
-    return;
-  }
+  resetService(email)
+    .then((result) => {
+      res.send(result);
+      next();
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+      next();
+    });
+};
 
-  //User exist and now create One time link valid 15 minutes
-  const secret = process.env.JWT_SECRET + user.password;
-  const payload = {
-    email: user.email,
-    id: user.id,
-  };
-  const token = jwt.sign(payload, secret, { expiresIn: "15m" });
-  const link = `http://localhost:3000/reset-password/${user.id}/${token}`;
-  console.log(link);
-  res.send("Password reset link has been sent to your email...");
-  next();
+exports.resetId = async (req, res, next) => {
+  const { id, token } = req.params;
+  findService(id, token)
+    .then((result) => {
+      res.send(JSON.stringify(result));
+      next();
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+      next();
+    });
+};
+
+exports.resetPass = async (req, res, next) => {
+  const { id } = req.params;
+  const { password } = req.body;
+  resetPassService(id, password)
+    .then((result) => {
+      res.send(result);
+      next();
+    })
+    .catch((err) => {
+      res.status(404).send(err);
+    });
 };

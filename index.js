@@ -3,8 +3,6 @@ require("dotenv").config();
 const winston = require("winston");
 const express = require("express");
 const app = express();
-const passwordReset = require("./routers/passwordReset");
-const updateUser = require("./routers/updateUser");
 const path = require("path");
 
 // require("./startup/logging")(); // initialize exceptions
@@ -26,6 +24,3 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   winston.info(`Listening on port ${port}...`);
 });
-
-app.use("/forgot-password", passwordReset);
-app.use("/", updateUser);
