@@ -2,7 +2,7 @@ const cors = require('cors')
 const express = require("express")
 const passwordReset = require("../routers/passwordReset");
 const updateUser = require("../routers/updateUser");
-
+const pageResourceRouter = require("../routers/pageResource.router");
 module.exports = function (app) {
   app.use(cors());
   app.use(express.json());
@@ -19,4 +19,5 @@ module.exports = function (app) {
   app.use("/forgot-password", passwordReset);
   app.use("/user", updateUser);
   //place routes here ...
+  app.use("/pageResource", pageResourceRouter);
 };
