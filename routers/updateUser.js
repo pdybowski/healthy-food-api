@@ -1,7 +1,13 @@
-const { updateUser } = require("../controllers/updateUser.controller");
+const express = require("express");
+const router = express.Router();
+const updateUserController = require("../controllers/updateUser.controller");
 
-const router = require("express").Router();
+router.put("/update", updateUserController.updateUser);
 
-router.put("/update", updateUser);
+/**
+ * DELETE USER
+ */
+router.delete("/delete/:id", updateUserController.deleteUser)
+
 
 module.exports = router;

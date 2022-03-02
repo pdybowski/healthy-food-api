@@ -1,10 +1,10 @@
-module.exports = MEAL_TYPES = [
+const MEAL_TYPES = [
     'breakfast',
     'lunch',
     'dinner'
 ]
 
-module.exports = UNIT_TYPES = [
+const UNIT_TYPES = [
     'kg',
     'g',
     'ml',
@@ -15,3 +15,5 @@ module.exports = UNIT_TYPES = [
     'pinch',
     'slice',
 ];
+
+module.exports = { MEAL_TYPES, UNIT_TYPES };
