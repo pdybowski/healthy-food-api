@@ -5,8 +5,8 @@ const { daySchema } = require("./day.model");
 const mealPlanSchema = Schema(
   {
     days: {
-        type: [daySchema],
-        required: true,
+      type: [daySchema],
+      required: true,
     },
     author: {
       type: Schema.Types.ObjectId,

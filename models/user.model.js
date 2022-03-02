@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const userSchema = Schema({
@@ -30,7 +30,6 @@ const userSchema = Schema({
     type: String,
     trim: true,
     minlength: 8,
-    maxlength: 20,
     required: true,
   },
   email: {
@@ -57,6 +56,6 @@ const userSchema = Schema({
   },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
