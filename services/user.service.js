@@ -8,7 +8,7 @@ exports.resetService = async (email) => {
   if (!user) {
     throw new NotFoundError("User not found.");
   }
-  const secret = process.env.JWT_SECRET + user.password;
+  const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
   console.log(secret);
   const payload = {
     email: user.email,
@@ -25,7 +25,7 @@ exports.findService = async (id, token) => {
   const user = await User.findOne({ id: id });
   if (id !== user.id) throw new NotFoundError("User not found.");
 
-  const secret = process.env.JWT_SECRET + user.password;
+  const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
 
   return jwt.verify(token, secret, (err, decoded) => {
     if (err) throw new UnauthorizedError("You don't have access.");
@@ -39,7 +39,7 @@ exports.resetPassService = async (id, password) => {
 
   if (id !== user.id) throw new NotFoundError("Invalid id.");
 
-  const secret = process.env.JWT_SECRET + user.password;
+  const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
 
   return jwt.verify(token, secret, async (err, decoded) => {
     if (err) throw new UnauthorizedError("You don't have access.");
