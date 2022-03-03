@@ -1,8 +1,10 @@
-const cors = require('cors')
-const express = require("express")
+const cors = require("cors");
+const express = require("express");
 const passwordReset = require("../routers/passwordReset");
 const updateUser = require("../routers/updateUser");
 const pageResourceRouter = require("../routers/pageResource.router");
+const userMealPlanRouter = require("../routers/userMealPlan.router");
+const { authToken } = require("../middleware/auth");
 module.exports = function (app) {
   app.use(cors());
   app.use(express.json());
@@ -19,5 +21,6 @@ module.exports = function (app) {
   app.use("/forgot-password", passwordReset);
   app.use("/user", updateUser);
   //place routes here ...
+  app.use("/user", authToken, userMealPlanRouter);
   app.use("/pageResource", pageResourceRouter);
 };
