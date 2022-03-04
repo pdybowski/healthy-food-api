@@ -3,7 +3,7 @@ const express = require("express");
 const passwordReset = require("../routers/passwordReset");
 const updateUser = require("../routers/updateUser");
 const pageResourceRouter = require("../routers/pageResource.router");
-const userMealPlanRouter = require("../routers/userMealPlan.router");
+const userMealPlanRouter = require("../routers/user.router");
 const { authToken } = require("../middleware/auth");
 module.exports = function (app) {
   app.use(cors());
@@ -18,9 +18,8 @@ module.exports = function (app) {
     next();
   });
 
-  app.use("/forgot-password", passwordReset);
-  app.use("/user", updateUser);
   //place routes here ...
-  app.use("/user", authToken, userMealPlanRouter);
+  app.use("/forgot-password", passwordReset);
+  app.use("/user", authToken, user);
   app.use("/pageResource", pageResourceRouter);
 };

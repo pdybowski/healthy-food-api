@@ -1,4 +1,4 @@
-const { resetService, findService } = require("../services/user.service");
+const { resetService, findService } = require("../services/auth-user.service");
 
 exports.reset = async (req, res, next) => {
   const { email } = req.body;

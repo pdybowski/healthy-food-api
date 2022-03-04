@@ -1,49 +1,52 @@
-// put api for user
-const User = require("../models/user.model");
-const jwt = require("jsonwebtoken");
+const MealPlan = require("../models/meal-plan.model");
 const { NotFoundError } = require("../helpers/errorHandlers");
 
-exports.resetService = async (email) => {
-  const user = await User.findOne({ email: email });
-  if (!user) {
-    throw new NotFoundError("User not found.");
+exports.getUserMealPlans = async (userId) => {
+  const mealPlan = await MealPlan.find({ author: userId });
+  if (!mealPlan) {
+    throw new NotFoundError("Meal plans don't exist");
   }
-  const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
-  console.log(secret);
-  const payload = {
-    email: user.email,
-    id: user._id,
-  };
-
-  const token = jwt.sign(payload, secret, { expiresIn: "15m" });
-  const link = `http://localhost:3000/forgot-password/${user._id}/${token}`;
-  console.log(link);
-  return link;
+  return mealPlan;
 };
 
-exports.findService = async (id, token) => {
-  const user = await User.findOne({ id: id });
-  if (id !== user.id) throw new NotFoundError("User not found.");
-
-  const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
-
-  return jwt.verify(token, secret, (err, decoded) => {
-    if (err) throw new UnauthorizedError("You don't have access.");
-
-    return decoded;
-  });
+exports.getUserMealPlan = async (id) => {
+  const mealPlan = await MealPlan.findById({ _id: id });
+  if (!mealPlan) {
+    throw new NotFoundError("Meal plan doesn't exist");
+  }
+  return mealPlan;
 };
 
-exports.resetPassService = async (id, password) => {
-  const user = await User.findOne({ id: id });
-
-  if (id !== user.id) throw new NotFoundError("Invalid id.");
-
-  const secret = process.env.ACCESS_TOKEN_SECRET + user.password;
-
-  return jwt.verify(token, secret, async (err, decoded) => {
-    if (err) throw new UnauthorizedError("You don't have access.");
-    user.password = password;
-    return await user.save();
+exports.udpateUserMealPlan = async (id, reqBody) => {
+  const mealPlan = await MealPlan.findById({ _id: id });
+  if (!mealPlan) {
+    throw new NotFoundError("Meal plan doesn't exist");
+  }
+  await MealPlan.findByIdAndUpdate({ _id: id }, reqBody, {
+    new: true,
   });
+  return true;
+};
+
+exports.deleteUserMealPlan = async (id) => {
+  const mealPlan = await MealPlan.findById({ _id: id });
+  if (!mealPlan) {
+    throw new NotFoundError("Meal plan doesn't exist");
+  }
+  await MealPlan.deleteOne({ _id: id });
+  return true;
+};
+
+exports.createUserMealPlan = async (reqBody) => {
+  const mealPlan = new MealPlan({
+    days: reqBody.days,
+    mealType: reqBody.mealType,
+    recipe: reqBody.recipe,
+    dayNumber: reqBody.dayNumber,
+    author: reqBody.author,
+    title: reqBody.title,
+    tags: reqBody.tags,
+    img: reqBody.img,
+  });
+  return await mealPlan.save();
 };
