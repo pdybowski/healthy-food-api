@@ -1,12 +1,11 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/user.model");
 const {
   BadRequestError,
   UnauthorizedError,
   InernalServerError,
 } = require("../helpers/errorHandlers");
 const { hashInput, hashCompare } = require("../hash");
-let { refreshTokens } = undefined; //TODO should be from database
-
 generateAccessToken = async (user) => {
   return jwt.sign(
     user,
