@@ -21,18 +21,7 @@ const getMany = async(user_id) => {
 }
 const createOne = async(req) => {
     const recipe = new Recipe({
-        author: req.author,
-        title: req.title,
-        tags: req.tags,
-        time: req.time,
-        mealType: req.mealType,
-        ingredients: req.ingredients,
-        description: req.description,
-        recipe: req.recipe,
-        img: req.img,
-        peopleNumber: req.peopleNumber,
-        isFavourite: req.isFavourite,
-        favouriteCount: req.favouriteCount
+        ...req.body
     })
     await recipe.save()
     return recipe

@@ -6,7 +6,7 @@ const validateRecipe = require('../validation/recipe.validation')
 router.get('/recipes', RecipeController.getUserRecipes)
 router.get('/recipes/:id', RecipeController.getSingleRecipe)
 router.post('/recipes/', validate(validateRecipe), RecipeController.createRecipe)
-router.patch('/recipes/:id', validate(validateRecipe), RecipeController.updateRecipe)
+router.put('/recipes/:id', validate(validateRecipe), RecipeController.updateRecipe)
 router.post('/recipes/:id', validate(validateRecipe), RecipeController.deleteRecipe)
 
 

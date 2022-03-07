@@ -16,8 +16,8 @@ const getUserRecipes = async (req, res, next) => {
         res.send(recipes)
     } catch (e) {
         res.status(400).send(e)
+        next()
     }
-    next()
 }
 
 const getSingleRecipe = async(req,res,next) => {
@@ -26,8 +26,8 @@ const getSingleRecipe = async(req,res,next) => {
         res.send(recipe)
     } catch (e) {
         res.status(400).send(e)
+        next()
     }
-    next()
 }
 
 const createRecipe = async(req,res,next) => {
@@ -36,8 +36,8 @@ const createRecipe = async(req,res,next) => {
         res.status(201).send(recipe)
     } catch (e) {
         res.status(400).send(e)
+        next()
     }
-    next()
 }
 
 const updateRecipe = async(req,res,next) => {
@@ -46,8 +46,8 @@ const updateRecipe = async(req,res,next) => {
         res.status(200).send(recipe)
     } catch (e) {
         res.status(400).send(e)
+        next()
     }
-    next()
 }
 
 const deleteRecipe = async(req,res,next) => {
@@ -56,6 +56,7 @@ const deleteRecipe = async(req,res,next) => {
         res.send(recipe)
     } catch (e) {
         res.status(400).send(e)
+        next()
     }
 }
 
