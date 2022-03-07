@@ -4,7 +4,7 @@ const statusCodes = require('../helpers/httpStatusCode')
 
 
 
-const getOne = async (user_id, recipe_id) => {
+const getRecipe = async (user_id, recipe_id) => {
     const recipe = await Recipe.findOne({author: user_id, _id: recipe_id }).lean()
     if (!recipe) {
         throw new NotFoundError('No recipe found')
@@ -12,21 +12,21 @@ const getOne = async (user_id, recipe_id) => {
 
     return recipe
 };
-const getMany = async(user_id) => {
+const getRecipes = async(user_id) => {
     const recipes = await Recipe.find({author: user_id})
     if (!recipes) {
         throw new NotFoundError('No recipes found')
     }
     return recipes
 }
-const createOne = async(req) => {
+const createRecipe = async(req) => {
     const recipe = new Recipe({
         ...req.body
     })
     await recipe.save()
     return recipe
 };
-const updateOne = async(recipe_id, update_data) => {
+const updateRecipe = async(recipe_id, update_data) => {
 
     const recipe = await Recipe.findById({_id: recipe_id})
     if(!recipe)
@@ -36,7 +36,7 @@ const updateOne = async(recipe_id, update_data) => {
     await Recipe.findByIdAndUpdate({_id: recipe_id}, update_data, {new: true})
     return recipe
 };
-const deleteOne = async(recipe_id) => {
+const deleteRecipe = async(recipe_id) => {
     const recipe = await Recipe.findById({ _id: id });
   if (!recipe) {
     throw new NotFoundError("Meal plan doesn't exist");
@@ -47,9 +47,9 @@ const deleteOne = async(recipe_id) => {
 
 
 module.exports = {
-    getOne,
-    getMany,
-    createOne,
-    updateOne,
-    deleteOne
+    getRecipe,
+    getRecipes,
+    createRecipe,
+    updateRecipe,
+    deleteRecipe
 }
