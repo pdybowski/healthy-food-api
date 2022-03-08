@@ -1,10 +1,10 @@
 const cors = require("cors");
 const express = require("express");
-const passwordReset = require("../routers/passwordReset");
-const updateUser = require("../routers/updateUser");
 const pageResourceRouter = require("../routers/pageResource.router");
 const userMealPlanRouter = require("../routers/user.router");
-const { authToken } = require("../middleware/auth");
+const userRouter = require("../routers/user.router");
+const router = express.Router();
+
 module.exports = function (app) {
   app.use(cors());
   app.use(express.json());
@@ -19,7 +19,8 @@ module.exports = function (app) {
   });
 
   //place routes here ...
-  app.use("/forgot-password", passwordReset);
-  app.use("/user", authToken, user);
+  app.use("/user", userMealPlanRouter, userRouter);
   app.use("/pageResource", pageResourceRouter);
 };
+
+module.exports = router;
