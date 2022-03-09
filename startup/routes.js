@@ -1,8 +1,9 @@
 const cors = require("cors");
 const express = require("express");
-const userMealPlanRouter = require("../routers/userMealPlan.router");
+const mealPlanRouter = require("../routers/userMealPlan.router");
 const pageResourceRouter = require("../routers/pageResource.router");
-const recipesRouter = require ('../routers/recipe.router')
+const recipesRouter = require("../routers/recipe.router");
+const favouritesRouter = require("../routers/favourite.router");
 const { authToken } = require("../middleware/auth");
 
 module.exports = function (app) {
@@ -22,6 +23,6 @@ module.exports = function (app) {
   });
 
   //place routes here ...
-  app.use("/user", authToken, userMealPlanRouter, recipesRouter);
+  app.use("/user", authToken, mealPlanRouter, recipesRouter, favouritesRouter);
   app.use("/pageResource", pageResourceRouter);
 };

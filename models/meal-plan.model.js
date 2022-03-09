@@ -24,6 +24,16 @@ const mealPlanSchema = Schema(
       data: Buffer,
       contentType: String,
     },
+    isFavourite: {
+      type: Boolean,
+      default: false,
+    },
+    favouriteCount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );
