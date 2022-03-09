@@ -22,7 +22,7 @@ exports.register = async (body) =>{
   const user = await User.findOne({email:email});
 
   if (user){
-    throw new Error ("User already registered");
+    throw new BadRequestError ("User already registered");
   }
   const newUser = new User({
     username,
@@ -31,28 +31,26 @@ exports.register = async (body) =>{
     phoneNumber:phoneNumber,
   });
   await newUser.save();
-  return"registeredToken";
+  return generateAccessToken;
 };
 
 //login
 exports.login = async(body) =>{
-  const{email,password} = body;
+  const{email} = body;
   const userWithEmail = await User.findOne({ email: email });
 
   if (!userWithEmail){
-    throw new Error ("Email or password does not match!")
-  } 
-
-  if (userWithEmail.password !== password)
-    throw new Error("User doesn't exist!" );
-}
+    throw new BadRequestError ("User doesn't exist!")
+  }
+  return generateAccessToken
+};
 
 //logout
 exports.logout = async(body) =>{
   const{email,password} = body;
   const user = await User.findOne({ email: email });
-  if(user){
-    throw new Error
-    ("User doesn't exist",)
-  }
-};
+  if(!user){
+    throw new BadRequestError
+    ("User doesn't exist")
+  };
+}

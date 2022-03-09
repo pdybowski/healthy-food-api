@@ -27,7 +27,7 @@ exports.login = async (req, res, next) =>{
 
 exports.logout = async (req,res,next) =>{
   try{
-    const token = AuthService.logout(req.body);
+    const token = await AuthService.logout(req.body);
     res.set("x-auth-token", token).json({
       status: true,
       message: "Logout succesfully",
