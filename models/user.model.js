@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const userSchema = Schema({
@@ -30,7 +30,6 @@ const userSchema = Schema({
     type: String,
     trim: true,
     minlength: 8,
-    maxlength: 255,
     required: true,
   },
   email: {
