@@ -9,8 +9,10 @@ const responseWithToken = (res, data) => {
 
 exports.register = async (req, res, next) =>{
   try{
-    const token = AuthService.register(req.body);
-    res.set("x-auth-token", token).json({message: "Tranks for registering"});
+    const token = await AuthService.register(req.body);
+    const data = {token, isAdmin, name};
+    res.header("X-Auth-Token", data.token).json(data);
+    ({message: "Tranks for registering"});
   }catch(error){
     next(error);
   }
@@ -27,11 +29,12 @@ exports.login = async (req, res, next) =>{
 
 exports.logout = async (req,res,next) =>{
   try{
-    const token = await AuthService.logout(req.body);
+    const token = AuthService.logout(req.body);
     res.set("x-auth-token", token).json({
       status: true,
       message: "Logout succesfully",
     });
+    //check if user exist res.status(200).send(true)
   }catch(error){
     next(error);
   }
