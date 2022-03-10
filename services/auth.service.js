@@ -24,14 +24,13 @@ exports.register = async (body) =>{
   if (user){
     throw new BadRequestError ("User already registered");
   }
-  const newUser = new User({
-    username,
-    email,
-    password,
-    phoneNumber:phoneNumber,
-  });
+  const resUser = _.pick(newUser, [
+    "_id",
+    "isAdmin",
+    "name"
+    ]);
   await newUser.save();
-  return generateAccessToken;
+  return { token, resUser }
 };
 
 //login
@@ -42,7 +41,7 @@ exports.login = async(body) =>{
   if (!userWithEmail){
     throw new BadRequestError ("User doesn't exist!")
   }
-  return generateAccessToken
+  return { token, isAdmin, name, _id }
 };
 
 //logout
@@ -50,7 +49,6 @@ exports.logout = async(body) =>{
   const{email,password} = body;
   const user = await User.findOne({ email: email });
   if(!user){
-    throw new BadRequestError
-    ("User doesn't exist")
+    throw new BadRequestError ("User doesn't exist")
   };
 }
