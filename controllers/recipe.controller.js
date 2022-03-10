@@ -1,17 +1,11 @@
-const {
-    getRecipe,
-    getRecipes,
-    createRecipe,
-    updateRecipe,
-    deleteRecipe
-} = require('../services/recipe.service')
+const RecipeService = require('../services/recipe.service')
 
 
 
 const getUserRecipes = async (req, res, next) => {
 
     try {
-        const recipes = await getRecipes(req.user._id)
+        const recipes = await RecipeService.getRecipes(req.user._id)
         res.send(recipes)
     } catch (e) {
         
@@ -21,7 +15,7 @@ const getUserRecipes = async (req, res, next) => {
 
 const getSingleRecipe = async(req,res,next) => {
     try {
-        const recipe = await getRecipe(req.params.id)
+        const recipe = await RecipeService.getRecipe(req.params.id)
         res.send(recipe)
     } catch (e) {
         
@@ -31,7 +25,7 @@ const getSingleRecipe = async(req,res,next) => {
 
 const createRecipe = async(req,res,next) => {
     try {
-        const recipe = await createRecipe(req.body)
+        const recipe = await RecipeService.createRecipe(req.body)
         res.status(201).send(recipe)
     } catch (e) {
         
@@ -41,7 +35,7 @@ const createRecipe = async(req,res,next) => {
 
 const updateRecipe = async(req,res,next) => {
     try {
-        const recipe = await updateRecipe(req.params.id,req.body)
+        const recipe = await RecipeService.updateRecipe(req.params.id,req.body)
         res.status(200).send(recipe)
     } catch (e) {
         
@@ -51,7 +45,7 @@ const updateRecipe = async(req,res,next) => {
 
 const deleteRecipe = async(req,res,next) => {
     try {
-        const recipe = deleteRecipe(req.params.id)
+        const recipe = RecipeService.deleteRecipe(req.params.id)
         res.send(recipe)
     } catch (e) {
         
