@@ -49,7 +49,7 @@ const userSchema = Schema({
     maxlength: 12,
     // unique: true,
     index: true,
-    required: true,
+    // required: true,
   },
   isAdmin: {
     type: Boolean,

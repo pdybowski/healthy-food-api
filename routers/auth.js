@@ -1,18 +1,13 @@
 const router = require("express").Router();
-const User = require("../models/user.model")
-const bcrypt = require ("bcryptjs")
-const jwt = require("jsonwebtoken")
-require ("dotenv").config();
-
 const AuthControlers = require ("../controllers/auth.controller")
 
-//Register
-router.post('/Register', AuthControlers.register)
+//register
+router.post('/register', AuthControlers.register)
 
-//Login
-router.post('/Login',AuthControlers.login)
+//login
+router.post('/login',AuthControlers.login)
 
-//Logout
+//logout
 router.get('/logout', AuthControlers.logout)
 
 

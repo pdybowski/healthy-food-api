@@ -15,27 +15,42 @@ generateAccessToken = async (user) => {
   );
 };
 
-generateRefreshToken = async (user) => {
-  const refreshToken = jwt.sign(
-    user,
-    process.env.REFRESH_TOKEN_SECRET,
-    null,
-    null
-  );
-  refreshTokens.push(refreshToken);
-  return refreshToken;
+//register
+exports.register = async (body) =>{
+  const {username, email, password, phoneNumber} = body;
+
+  const user = await User.findOne({email:email});
+
+  if (user){
+    throw new BadRequestError ("User already registered");
+  }
+  const newUser = new User({
+    username,
+    email,
+    password,
+    phoneNumber:phoneNumber,
+  });
+  await newUser.save();
+  return generateAccessToken;
 };
 
-exports.login = async (req, res, next) => {
-  //TODO validate req.body object and response with error if doesnt exist
+//login
+exports.login = async(body) =>{
+  const{email} = body;
+  const userWithEmail = await User.findOne({ email: email });
 
-  const bcrypt = await hashCompare(req.body.password, req.user.password);
-  if (!bcrypt) throw new UnauthorizedError("Invalid email or password.");
-
-  const [accessToken, refreshToken] = await Promise.all([
-    generateAccessToken(req.user),
-    generateRefreshToken(req.user),
-  ]);
-
-  return { accessToken: accessToken, refreshToken: refreshToken }; //TODO probably we we should return also userRole
+  if (!userWithEmail){
+    throw new BadRequestError ("User doesn't exist!")
+  }
+  return generateAccessToken
 };
+
+//logout
+exports.logout = async(body) =>{
+  const{email,password} = body;
+  const user = await User.findOne({ email: email });
+  if(!user){
+    throw new BadRequestError
+    ("User doesn't exist")
+  };
+}
