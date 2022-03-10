@@ -79,10 +79,10 @@ exports.resetPass = async (req, res, next) => {
 
 exports.updateUser = async (req, res, next) => {
   const updatedData = req.body;
-  this.updateUser(req.body);
+  this.updateUser(updatedData);
   try {
-    await UserService.updateUser(req.body);
-    res.send(result);
+    const result = await UserService.updateUser(updatedData);
+    return res.send(result);
   } catch (error) {
     next(error);
   }
