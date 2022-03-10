@@ -49,15 +49,6 @@ const recipeSchema = Schema(
       min: 0,
       max: 100,
     },
-    isFavourite: {
-      type: Boolean,
-      default: false,
-    },
-    favouriteCount: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
     likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }

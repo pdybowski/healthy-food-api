@@ -2,8 +2,8 @@ const MealPlan = require("../models/meal-plan.model");
 const Recipe = require("../models/recipe.model");
 const { NotFoundError } = require("../helpers/errorHandlers");
 
-const udpateFavMealPlanStatus = async (id, userId) => {
-  const mealPlan = await MealPlan.findById({ _id: id });
+exports.udpateFavMealPlanStatus = async (id, userId) => {
+  const mealPlan = await MealPlan.findById(id);
   if (!mealPlan) {
     throw new NotFoundError("MealPlan not found");
   }
@@ -17,24 +17,20 @@ const udpateFavMealPlanStatus = async (id, userId) => {
     return await MealPlan.updateOne(
       { _id: id },
       {
-        $inc: { favouriteCount: -1 },
         $pull: { likes: userId },
-        $set: { isFavourite: false },
       }
     );
   }
   return await MealPlan.updateOne(
     { _id: id },
     {
-      $inc: { favouriteCount: 1 },
       $push: { likes: userId },
-      $set: { isFavourite: true },
     }
   );
 };
 
-const udpateFavRecipeStatus = async (id, userId) => {
-  const recipe = await Recipe.findById({ _id: id });
+exports.udpateFavRecipeStatus = async (id, userId) => {
+  const recipe = await Recipe.findById(id);
   if (!recipe) {
     throw new NotFoundError("Recipe not found");
   }
@@ -48,23 +44,19 @@ const udpateFavRecipeStatus = async (id, userId) => {
     return await Recipe.updateOne(
       { _id: id },
       {
-        $inc: { favouriteCount: -1 },
         $pull: { likes: userId },
-        $set: { isFavourite: false },
       }
     );
   }
   return await Recipe.updateOne(
     { _id: id },
     {
-      $inc: { favouriteCount: 1 },
       $push: { likes: userId },
-      $set: { isFavourite: true },
     }
   );
 };
 
-const getUserFavouriteMealPlans = async (userId) => {
+exports.getUserFavouriteMealPlans = async (userId) => {
   const mealPlans = await MealPlan.find({
     likes: {
       $elemMatch: { $eq: userId },
@@ -76,7 +68,7 @@ const getUserFavouriteMealPlans = async (userId) => {
   return mealPlans;
 };
 
-const getUserFavouriteRecipes = async (userId) => {
+exports.getUserFavouriteRecipes = async (userId) => {
   const recipes = await Recipe.find({
     likes: {
       $elemMatch: { $eq: userId },
@@ -86,11 +78,4 @@ const getUserFavouriteRecipes = async (userId) => {
     throw new NotFoundError("Recipe not found");
   }
   return recipes;
-};
-
-module.exports = {
-  udpateFavMealPlanStatus,
-  getUserFavouriteMealPlans,
-  getUserFavouriteRecipes,
-  udpateFavRecipeStatus,
 };
