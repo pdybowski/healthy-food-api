@@ -1,17 +1,38 @@
-const authService = require("../services/auth.service");
+const AuthService = require("../services/auth.service")
 
 const responseWithToken = (res, data) => {
   return res.header("X-Auth-Token", data.token).json(data);
 };
 
-exports.login = async (req, res, next) => {
+exports.register = async (req, res, next) =>{
   try {
-    const data = await authService.login(req.body); // TODO probably broken - its just an example
-    return responseWithToken(res, data); //TODO
-  } catch (error) {
+    const data = await AuthService.register(req.body);
+    return responseWithToken(res, data);
+  }catch(error){
     next(error);
   }
 };
 
-// TODO register
-// TODO logout
+exports.login = async (req, res, next) =>{
+  try {
+    const data = await AuthService.login(req.body);
+    res.header("X-Auth-Token", data.token).json(data)
+  }catch(error){
+    next(error);
+  }
+};
+
+exports.logout = async (req, res, next) =>{
+  try {
+    const { params } = req;
+    await AuthService.logout(params);
+    res.status(200).send(true)
+  } catch(error){
+    next(error);
+  }
+};
+
+
+
+
+

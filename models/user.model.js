@@ -46,9 +46,7 @@ const userSchema = Schema({
     lowercase: true,
     trim: true,
     maxlength: 12,
-    unique: true,
     index: true,
-    required: true,
   },
   isAdmin: {
     type: Boolean,

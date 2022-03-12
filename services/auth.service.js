@@ -1,14 +1,10 @@
+const _ = require("lodash");
 const jwt = require("jsonwebtoken");
-const {
-  BadRequestError,
-  UnauthorizedError,
-  InernalServerError,
-} = require("../helpers/errorHandlers");
+const User = require("../models/user.model");
+const { BadRequestError, UnauthorizedError } = require("../helpers/errorHandlers");
 const { hashInput, hashCompare } = require("../hash");
 
-let { refreshTokens } = undefined; //TODO should be from database
-
-generateAccessToken = async (user) => {
+generateAccessToken = (user) => {
   return jwt.sign(
     user,
     process.env.ACCESS_TOKEN_SECRET,
@@ -17,27 +13,57 @@ generateAccessToken = async (user) => {
   );
 };
 
-generateRefreshToken = async (user) => {
-  const refreshToken = jwt.sign(
-    user,
-    process.env.REFRESH_TOKEN_SECRET,
-    null,
-    null
-  );
-  refreshTokens.push(refreshToken);
-  return refreshToken;
-};
+//register
+exports.register = async (body) => {
+  const { email, password } = body;
 
-exports.login = async (req, res, next) => {
-  //TODO validate req.body object and response with error if doesnt exist
+  const user = await User.findOne({ email: email });
 
-  const bcrypt = await hashCompare(req.body.password, req.user.password);
-  if (!bcrypt) throw new UnauthorizedError("Invalid email or password.");
+  if(user) {
+    throw new BadRequestError("User already registered");
+  }
 
-  const [accessToken, refreshToken] = await Promise.all([
-    generateAccessToken(req.user),
-    generateRefreshToken(req.user),
+  const newUser = new User({ ...body }) 
+  newUser.password = await hashInput(password);
+
+  await newUser.save();
+
+  const resUser = _.pick(newUser, [
+    "_id",
+    "isAdmin",
+    "name"
   ]);
 
-  return { accessToken: accessToken, refreshToken: refreshToken }; //TODO probably we we should return also userRole
+  const token = generateAccessToken(resUser);
+
+  return { token, user: resUser }
 };
+
+//login
+exports.login = async(body) =>{
+  const { email, password } = body;
+
+  const user = await User.findOne({ email: email });
+  if(!user) throw new BadRequestError("Invalid email or password.");
+
+  const validPassword = await hashCompare(password, user.password);
+  if (!validPassword) throw new UnauthorizedError("Invalid email or password.");
+
+  const resUser = _.pick(user, [
+    "_id",
+    "isAdmin",
+    "name"
+  ]);
+
+  const token = generateAccessToken(resUser);
+
+  return { token, user: resUser }
+};
+
+//logout
+exports.logout = async (params) =>{
+  const { id } = params;
+  const user = await User.findById(id);
+
+  if(!user) throw new BadRequestError("User doesn't exist");
+}
