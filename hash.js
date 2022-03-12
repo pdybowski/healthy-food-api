@@ -11,3 +11,4 @@ async function hashCompare(input, compare) {
 }
 
 module.exports = { hashInput, hashCompare };
+
