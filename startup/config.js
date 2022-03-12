@@ -1,5 +1,4 @@
 require("dotenv").config();
-const config = require("config");
 
 module.exports = function () {
   if (!process.env.ACCESS_TOKEN_SECRET) {

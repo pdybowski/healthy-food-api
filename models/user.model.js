@@ -8,7 +8,7 @@ const userSchema = Schema({
     trim: true,
     minlength: 2,
     maxlength: 20,
-    // required: true,
+    required: true,
   },
   surname: {
     type: String,
@@ -16,7 +16,7 @@ const userSchema = Schema({
     trim: true,
     minlength: 2,
     maxlength: 20,
-    // required: true,
+    required: true,
   },
   username: {
     type: String,
@@ -24,7 +24,7 @@ const userSchema = Schema({
     trim: true,
     minlength: 2,
     maxlength: 10,
-    // required: true,
+    required: true,
   },
   password: {
     type: String,
@@ -37,18 +37,16 @@ const userSchema = Schema({
     lowercase: true,
     trim: true,
     maxlength: 255,
-    // unique: true,
+    unique: true,
     index: true,
-    // required: true,
+    required: true,
   },
   phoneNumber: {
     type: String,
     lowercase: true,
-    // trim: true,
+    trim: true,
     maxlength: 12,
-    // unique: true,
     index: true,
-    // required: true,
   },
   isAdmin: {
     type: Boolean,

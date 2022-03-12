@@ -1,12 +1,10 @@
+const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
-const {
-  BadRequestError,
-  UnauthorizedError,
-  InernalServerError,
-} = require("../helpers/errorHandlers");
+const { BadRequestError, UnauthorizedError } = require("../helpers/errorHandlers");
 const { hashInput, hashCompare } = require("../hash");
-generateAccessToken = async (user) => {
+
+generateAccessToken = (user) => {
   return jwt.sign(
     user,
     process.env.ACCESS_TOKEN_SECRET,
@@ -14,46 +12,58 @@ generateAccessToken = async (user) => {
     null
   );
 };
-//create token
-const token = jwt.generateAccessToken;
 
 //register
-exports.register = async (body) =>{
-  const {username, email, password, phoneNumber} = body;
+exports.register = async (body) => {
+  const { email, password } = body;
 
-  const user = await User.findOne({email:email});
+  const user = await User.findOne({ email: email });
 
-  if (user){
-    throw new BadRequestError ("User already registered");
+  if(user) {
+    throw new BadRequestError("User already registered");
   }
+
+  const newUser = new User({ ...body }) 
+  newUser.password = await hashInput(password);
+
+  await newUser.save();
+
   const resUser = _.pick(newUser, [
     "_id",
     "isAdmin",
     "name"
-    ]);
-  await resUser.save();
-  return { token, resUser }
+  ]);
+
+  const token = generateAccessToken(resUser);
+
+  return { token, user: resUser }
 };
 
 //login
 exports.login = async(body) =>{
-  const{email} = body;
-  const userWithEmail = await User.findOne({ email: email });
+  const { email, password } = body;
 
-  if (!userWithEmail){
-    throw new BadRequestError ("User doesn't exist!")
-  }
-  return { token, isAdmin, name, _id }
+  const user = await User.findOne({ email: email });
+  if(!user) throw new BadRequestError("Invalid email or password.");
+
+  const validPassword = await hashCompare(password, user.password);
+  if (!validPassword) throw new UnauthorizedError("Invalid email or password.");
+
+  const resUser = _.pick(user, [
+    "_id",
+    "isAdmin",
+    "name"
+  ]);
+
+  const token = generateAccessToken(resUser);
+
+  return { token, user: resUser }
 };
 
 //logout
-exports.logout = async(body) =>{
-  const{email,password} = body;
-  const user = await User.findOne({ email: email });
-  if(user){
-    res.status(200).send(true)
-  }
-  if(!user){
-    throw new BadRequestError ("User doesn't exist")
-  };
+exports.logout = async (params) =>{
+  const { id } = params;
+  const user = await User.findById(id);
+
+  if(!user) throw new BadRequestError("User doesn't exist");
 }
