@@ -14,6 +14,8 @@ generateAccessToken = async (user) => {
     null
   );
 };
+//create token
+const token = jwt.generateAccessToken;
 
 //register
 exports.register = async (body) =>{
@@ -29,7 +31,7 @@ exports.register = async (body) =>{
     "isAdmin",
     "name"
     ]);
-  await newUser.save();
+  await resUser.save();
   return { token, resUser }
 };
 
@@ -48,6 +50,9 @@ exports.login = async(body) =>{
 exports.logout = async(body) =>{
   const{email,password} = body;
   const user = await User.findOne({ email: email });
+  if(user){
+    res.status(200).send(true)
+  }
   if(!user){
     throw new BadRequestError ("User doesn't exist")
   };
