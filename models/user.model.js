@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const userSchema = Schema({
   name: {
     type: String,
-    lowercase: true,
     trim: true,
     minlength: 2,
     maxlength: 20,
@@ -12,7 +11,6 @@ const userSchema = Schema({
   },
   surname: {
     type: String,
-    lowercase: true,
     trim: true,
     minlength: 2,
     maxlength: 20,
@@ -20,10 +18,11 @@ const userSchema = Schema({
   },
   username: {
     type: String,
-    lowercase: true,
     trim: true,
     minlength: 2,
     maxlength: 10,
+    index: true,
+    unqiue: true,
     required: true,
   },
   password: {
@@ -46,7 +45,6 @@ const userSchema = Schema({
     lowercase: true,
     trim: true,
     maxlength: 12,
-    index: true,
   },
   isAdmin: {
     type: Boolean,
@@ -54,6 +52,6 @@ const userSchema = Schema({
   },
 });
 
-const User = mongoose.model("User", userSchema, "User");
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
