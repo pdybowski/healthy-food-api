@@ -1,9 +1,7 @@
 const RecipeService = require('../services/recipe.service')
 
 
-
 const getUserRecipes = async (req, res, next) => {
-
     try {
         const recipes = await RecipeService.getRecipes(req.user._id)
         res.send(recipes)
