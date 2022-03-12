@@ -46,9 +46,7 @@ const userSchema = Schema({
     lowercase: true,
     trim: true,
     maxlength: 12,
-    unique: true,
     index: true,
-    required: true,
   },
   isAdmin: {
     type: Boolean,
@@ -56,6 +54,6 @@ const userSchema = Schema({
   },
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema, "User");
 
 module.exports = User;
