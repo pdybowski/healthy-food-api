@@ -24,6 +24,7 @@ const mealPlanSchema = Schema(
       data: Buffer,
       contentType: String,
     },
+    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

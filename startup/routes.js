@@ -1,11 +1,14 @@
 const cors = require("cors");
 const express = require("express");
+
+const userRouter = require("../routers/user.router");
+const pageResourceRouter = require("../routers/pageResource.router");
+const recipesRouter = require("../routers/recipe.router");
+const favouritesRouter = require("../routers/favourite.router");
+const authRouter = require("../routers/auth.router");
+
 const { authToken } = require("../middleware/auth");
 const error = require("../middleware/error");
-const pageResourceRouter = require("../routers/pageResource.router");
-const userMealPlanRouter = require("../routers/user.router");
-const recipesRouter = require ('../routers/recipe.router')
-const authRouter = require("../routers/auth.router");
 
 
 module.exports = function (app) {
@@ -22,7 +25,7 @@ module.exports = function (app) {
   });
 
   //place routes here ...
-  app.use("/api/user", authToken, userMealPlanRouter, recipesRouter);
+  app.use("/api/user", authToken, userRouter, recipesRouter, favouritesRouter);
   app.use("/api/pageResource", pageResourceRouter);
   app.use("/api/auth", authRouter);
 
