@@ -1,68 +1,57 @@
-const {
-    getRecipe,
-    getRecipes,
-    createRecipe,
-    updateRecipe,
-    deleteRecipe
-} = require('../services/recipe.service')
+// const {
+//     getRecipe,
+//     getRecipes,
+//     createRecipe,
+//     updateRecipe,
+//     deleteRecipe
+// } = require('../services/recipe.service')
 
 
 
-const getUserRecipes = async (req, res, next) => {
+// const getUserRecipes = async (req, res, next) => {
 
-    try {
-        const recipes = await getRecipes(req.user._id)
-        res.send(recipes)
-    } catch (e) {
+//     try {
+//         const recipes = await getRecipes(req.user._id)
+//         res.send(recipes)
+//     } catch (e) {
         
-        next(e)
-    }
-}
+//         next(e)
+//     }
+// }
 
-const getSingleRecipe = async(req,res,next) => {
-    try {
-        const recipe = await getRecipe(req.params.id)
-        res.send(recipe)
-    } catch (e) {
+// const getSingleRecipe = async(req,res,next) => {
+//     try {
+//         const recipe = await getRecipe(req.params.id)
+//         res.send(recipe)
+//     } catch (e) {
         
-        next(e)
-    }
-}
+//         next(e)
+//     }
+// }
 
-const createRecipe = async(req,res,next) => {
-    try {
-        const recipe = await createRecipe(req.body)
-        res.status(201).send(recipe)
-    } catch (e) {
+// const updateRecipe = async(req,res,next) => {
+//     try {
+//         const recipe = await updateRecipe(req.params.id,req.body)
+//         res.status(200).send(recipe)
+//     } catch (e) {
         
-        next(e)
-    }
-}
+//         next(e)
+//     }
+// }
 
-const updateRecipe = async(req,res,next) => {
-    try {
-        const recipe = await updateRecipe(req.params.id,req.body)
-        res.status(200).send(recipe)
-    } catch (e) {
+// const deleteRecipe = async(req,res,next) => {
+//     try {
+//         const recipe = deleteRecipe(req.params.id)
+//         res.send(recipe)
+//     } catch (e) {
         
-        next(e)
-    }
-}
+//         next(e)
+//     }
+// }
 
-const deleteRecipe = async(req,res,next) => {
-    try {
-        const recipe = deleteRecipe(req.params.id)
-        res.send(recipe)
-    } catch (e) {
-        
-        next(e)
-    }
-}
-
-module.exports = {
-    getUserRecipes,
-    getSingleRecipe,
-    createRecipe,
-    updateRecipe,
-    deleteRecipe
-}
+// module.exports = {
+//     getUserRecipes,
+//     getSingleRecipe,
+//     updateRecipe,
+//     deleteRecipe
+// }
