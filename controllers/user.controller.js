@@ -53,7 +53,7 @@ exports.deleteUserMealPlan = async (req, res, next) => {
 
 exports.getUserRecipes = async (req, res, next) => {
   try {
-      const recipes = await RecipeService.getRecipes(req.user._id)
+      const recipes = await UserService.getRecipes(req.user._id)
       res.send(recipes)
   } catch (e) {
       
@@ -63,7 +63,7 @@ exports.getUserRecipes = async (req, res, next) => {
 
 exports.getSingleRecipe = async(req,res,next) => {
   try {
-      const recipe = await RecipeService.getRecipe(req.params.id)
+      const recipe = await UserService.getRecipe(req.params.id)
       res.send(recipe)
   } catch (e) {
       
@@ -73,7 +73,7 @@ exports.getSingleRecipe = async(req,res,next) => {
 
 exports.createRecipe = async(req,res,next) => {
   try {
-      const recipe = await RecipeService.createRecipe(req)
+      const recipe = await UserService.createRecipe(req)
       res.status(201).send(recipe)
   } catch (e) {
       
@@ -83,7 +83,7 @@ exports.createRecipe = async(req,res,next) => {
 
 exports.updateRecipe = async(req,res,next) => {
   try {
-      const recipe = await RecipeService.updateRecipe(req.params.id,req.body)
+      const recipe = await UserService.updateRecipe(req.params.id,req.body)
       res.status(200).send(recipe)
   } catch (e) {
       
@@ -93,7 +93,7 @@ exports.updateRecipe = async(req,res,next) => {
 
 exports.deleteRecipe = async(req,res,next) => {
   try {
-      const recipe = RecipeService.deleteRecipe(req.params.id)
+      const recipe = UserService.deleteRecipe(req.params.id)
       res.send(recipe)
   } catch (e) {
       
