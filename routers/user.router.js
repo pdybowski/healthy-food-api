@@ -51,6 +51,39 @@ router.post("/:id/:token", validate(validateUser), UserController.resetPass);
 //UPDATE USER
 router.put("/update", validate(validateUser), UserController.updateUser);
 
+
+
+
+//#region recipes
+
+/**
+ * GET USER'S RECIPES
+ */
+ router.get("/recipes", UserController.getUserRecipes);
+
+ /**
+  * GET USER'S SINGLE RECIPES
+  */
+ router.get("/recipes/:id", UserController.getSingleRecipe);
+ 
+ /**
+  * CREATE USER'S MEALPLAN
+  */
+ router.post("/recipes", validate(validateMealPlan), UserController.createRecipe);
+ 
+ /**
+  * UPDATE ONE USERS'S MEALPLAN
+  */
+ router.patch("/recipes/:id", validate(validateMealPlan), UserController.updateRecipe);
+ 
+ /**
+  * DELETE ONE USERS'S MEALPLAN
+  */
+ router.delete("/recipes/:id", UserController.deleteRecipe);
+ 
+ //#endregion
+
+
 module.exports = router;
 
 
