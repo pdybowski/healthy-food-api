@@ -40,17 +40,20 @@ router.delete("/mealplans/:id", UserController.deleteUserMealPlan);
 //#endregion
 
 //SENDING A LINK TO RESET PASSWORD
-router.post("/", UserController.resetUserPass);
+router.post('/', UserController.resetUserPass);
 
 //FIND USER IN DATABASE
-router.get("/:id/:token", authToken, UserController.findUserId);
+router.get('/:id/:token', authToken, UserController.findUserId);
 
 //RESET USER PASSWORD
-router.post("/:id/:token", validate(validateUser), UserController.resetPass);
+router.post('/:id/:token', validate(validateUser), UserController.resetPass);
 
 //UPDATE USER
-router.put("/update", validate(validateUser), UserController.updateUser);
+router.put('/update', validate(validateUser), UserController.updateUser);
+
+/**
+ * DELETE USER
+ */
+router.delete('/delete/:id', UserController.deleteUser);
 
 module.exports = router;
-
-

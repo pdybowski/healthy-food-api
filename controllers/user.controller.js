@@ -88,7 +88,11 @@ exports.updateUser = async (req, res, next) => {
   }
 };
 
-
-
-
-
+exports.deleteUser = async (req, res, next) => {
+  try {
+    await UserService.deleteUser(req.params.id);
+    res.status(200).send(true);
+  } catch (error) {
+    next(error);
+  }
+};
