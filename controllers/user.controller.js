@@ -1,5 +1,7 @@
 const UserService = require("../services/user.service");
 
+// MEALPLANS
+
 exports.getAllUserMealPlans = async (req, res, next) => {
   userId = req.user._id;
   try {
@@ -45,6 +47,61 @@ exports.deleteUserMealPlan = async (req, res, next) => {
     next(error);
   }
 };
+
+// RECIPES
+
+
+exports.getUserRecipes = async (req, res, next) => {
+  try {
+      const recipes = await RecipeService.getRecipes(req.user._id)
+      res.send(recipes)
+  } catch (e) {
+      
+      next(e)
+  }
+}
+
+exports.getSingleRecipe = async(req,res,next) => {
+  try {
+      const recipe = await RecipeService.getRecipe(req.params.id)
+      res.send(recipe)
+  } catch (e) {
+      
+      next(e)
+  }
+}
+
+exports.createRecipe = async(req,res,next) => {
+  try {
+      const recipe = await RecipeService.createRecipe(req)
+      res.status(201).send(recipe)
+  } catch (e) {
+      
+      next(e)
+  }
+}
+
+exports.updateRecipe = async(req,res,next) => {
+  try {
+      const recipe = await RecipeService.updateRecipe(req.params.id,req.body)
+      res.status(200).send(recipe)
+  } catch (e) {
+      
+      next(e)
+  }
+}
+
+exports.deleteRecipe = async(req,res,next) => {
+  try {
+      const recipe = RecipeService.deleteRecipe(req.params.id)
+      res.send(recipe)
+  } catch (e) {
+      
+      next(e)
+  }
+}
+
+// USER
 
 exports.resetUserPass = async (req, res, next) => {
   const { email } = req.body;
