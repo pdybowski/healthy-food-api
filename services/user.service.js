@@ -1,8 +1,14 @@
 const MealPlan = require("../models/meal-plan.model");
 const { NotFoundError, UnauthorizedError } = require("../helpers/errorHandlers");
 const User = require("../models/user.model");
+const Recipe = require('../models/recipe.model')
 const jwt = require("jsonwebtoken");
 const { authToken } = require("../middleware/auth");
+const req = require("express/lib/request");
+
+/*
+MEALPLANS
+*/
 
 exports.getUserMealPlans = async (userId) => {
   const mealPlan = await MealPlan.find({ author: userId });
@@ -54,6 +60,62 @@ exports.createUserMealPlan = async (reqBody) => {
   return await mealPlan.save();
 };
 
+/*
+RECIPES
+*/
+
+exports.getRecipe = async (recipe_id) => {
+  const recipe = await Recipe.findById({recipe_id})
+  if (!recipe) {
+      throw new NotFoundError('No recipe found')
+  }
+
+  return recipe
+}
+
+exports.getRecipes = async(user_id) => {
+  const recipes = await Recipe.find({author: user_id})
+  if (!recipes) {
+      throw new NotFoundError('No recipes found')
+  }
+  return recipes
+}
+
+exports.createRecipe = async(req) => {
+
+  const reqData = req
+  console.log("createRecipe", mongoose.Types.ObjectId(req._id))
+  const recipe = new Recipe({
+      author: mongoose.Types.ObjectId(req.user._id)
+  })
+  await recipe.save()
+  return recipe
+};
+
+exports.updateRecipe = async(recipe_id, update_data) => {
+
+  const recipe = await Recipe.findById({_id: recipe_id})
+  if(!recipe)
+  {
+      throw  new NotFoundError('Recipe not found')
+  }
+  await Recipe.findByIdAndUpdate({_id: recipe_id}, update_data, {new: true})
+  return recipe
+};
+
+exports.deleteRecipe = async(recipe_id) => {
+  const recipe = await Recipe.findById({ _id: id });
+if (!recipe) {
+  throw new NotFoundError("Meal plan doesn't exist");
+}
+await Recipe.deleteOne({ _id: id });
+return true;
+};
+
+
+/*
+USER
+*/
 exports.resetUserPassLink = async (email) => {
   const user = await User.findOne({ email: email });
   if (!user) {
