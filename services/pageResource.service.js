@@ -7,6 +7,6 @@ exports.getPageResource = async () => {
         Recipe.find({}),
         MealPlan.find({})
     ]);
-    const pageResource = {mealPlans: allRecipes, recipes: allMealPlans}
+    const pageResource = {mealPlans: allMealPlans, recipes: allRecipes}
     return pageResource;
 };
