@@ -3,7 +3,7 @@ const router = express.Router();
 const UserController = require("../controllers/user.controller");
 const { authToken } = require("../middleware/auth");
 const validate = require("../middleware/validate");
-const validateMealPlan = require("../validation/meal-plan.validation");
+const {validateMealPlan, validateUpdateMealPlan} = require("../validation/meal-plan.validation");
 const validateUser = require("../validation/user.validation");
 const {validateRecipe, validatePatchRecipe} = require('../validation/recipe.validation')
 
@@ -61,7 +61,7 @@ router.post("/mealplans", validate(validateMealPlan), UserController.createUserM
 /**
  * UPDATE ONE USERS'S MEALPLAN
  */
-router.patch("/mealplans/:id", validate(validateMealPlan), UserController.updateUserMealPlan);
+router.patch("/mealplans/:id", validate(validateUpdateMealPlan), UserController.updateUserMealPlan);
 
 /**
  * DELETE ONE USERS'S MEALPLAN
