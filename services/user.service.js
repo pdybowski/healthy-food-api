@@ -4,8 +4,6 @@ const User = require("../models/user.model");
 const Recipe = require('../models/recipe.model')
 const jwt = require("jsonwebtoken");
 const { authToken } = require("../middleware/auth");
-const req = require("express/lib/request");
-const mongoose = require('mongoose')
 
 /*
 MEALPLANS
@@ -27,15 +25,14 @@ exports.getUserMealPlan = async (id) => {
   return mealPlan;
 };
 
-exports.udpateUserMealPlan = async (id, reqBody) => {
-  const mealPlan = await MealPlan.findById({ _id: id });
+exports.updateUserMealPlan = async (id, reqBody) => {
+  const mealPlan = await MealPlan.findByIdAndUpdate({ _id: id }, reqBody, {
+    new: true,
+  });
   if (!mealPlan) {
     throw new NotFoundError("Meal plan doesn't exist");
   }
-  await MealPlan.findByIdAndUpdate({ _id: id }, reqBody, {
-    new: true,
-  });
-  return true;
+  return mealPlan;
 };
 
 exports.deleteUserMealPlan = async (id) => {
@@ -48,6 +45,7 @@ exports.deleteUserMealPlan = async (id) => {
 };
 
 exports.createUserMealPlan = async (reqBody) => {
+  console.log('createUserMealPlan ', reqBody)
   const mealPlan = new MealPlan({
     days: reqBody.days,
     mealType: reqBody.mealType,

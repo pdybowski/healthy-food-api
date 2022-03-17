@@ -24,8 +24,8 @@ exports.getUserMealPlan = async (req, res, next) => {
 
 exports.createUserMealPlan = async (req, res, next) => {
   try {
-    const newMealPlan = await UserService.createUserMealPlan(req.body);
-    res.status(201).json(newMealPlan);
+    const newMealPlan = await UserService.createUserMealPlan({author: req.user._id, ...req.body}, );
+    res.status(201).send(newMealPlan);
   } catch (error) {
     next(error);
   }
@@ -33,8 +33,8 @@ exports.createUserMealPlan = async (req, res, next) => {
 
 exports.updateUserMealPlan = async (req, res, next) => {
   try {
-    await UserService.udpateUserMealPlan(req.params.id, req.body);
-    res.status(200).json({ message: "Updated meal plan" });
+    const mealPlan = await UserService.updateUserMealPlan(req.params.id, req.body);
+    res.status(200).json(mealPlan);
   } catch (error) {
     next(error);
   }
