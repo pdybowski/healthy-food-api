@@ -1,10 +1,11 @@
 const MealPlan = require("../models/meal-plan.model");
-const { NotFoundError, UnauthorizedError } = require("../helpers/errorHandlers");
+const { NotFoundError, UnauthorizedError, BadRequestError } = require("../helpers/errorHandlers");
 const User = require("../models/user.model");
 const Recipe = require('../models/recipe.model')
 const jwt = require("jsonwebtoken");
 const { authToken } = require("../middleware/auth");
 const req = require("express/lib/request");
+const mongoose = require('mongoose')
 
 /*
 MEALPLANS
@@ -64,13 +65,13 @@ exports.createUserMealPlan = async (reqBody) => {
 RECIPES
 */
 
-exports.getRecipe = async (recipe_id) => {
-  const recipe = await Recipe.findById({recipe_id})
+exports.getUserRecipe = async(id) => {
+  console.log('service ', id)
+  const recipe = await Recipe.find({ _id: id });
   if (!recipe) {
-      throw new NotFoundError('No recipe found')
+    throw new NotFoundError("Recipe not found");
   }
-
-  return recipe
+  return recipe;
 }
 
 exports.getRecipes = async(user_id) => {
@@ -82,11 +83,19 @@ exports.getRecipes = async(user_id) => {
 }
 
 exports.createRecipe = async(req) => {
-
-  const reqData = req
-  console.log("createRecipe", mongoose.Types.ObjectId(req._id))
+  const author = req.user._id
   const recipe = new Recipe({
-      author: mongoose.Types.ObjectId(req.user._id)
+      title: req.body.title,
+      tags: req.body.tags,
+      time: req.body.time,
+      mealType: req.body.mealType,
+      ingredients: req.body.ingredients,
+      description: req.body.description,
+      recipe: req.body.recipe,
+      img: req.body.img,
+      peopleNumber: req.body.peopleNumber,
+      likes: req.body.likes,
+      author: author
   })
   await recipe.save()
   return recipe

@@ -5,10 +5,41 @@ const { authToken } = require("../middleware/auth");
 const validate = require("../middleware/validate");
 const validateMealPlan = require("../validation/meal-plan.validation");
 const validateUser = require("../validation/user.validation");
+const validateRecipe = require('../validation/recipe.validation')
 
-//#region user
 
-//#endregion
+//#region recipes
+
+/**
+ * GET USER'S RECIPES
+ */
+ router.get("/recipes", UserController.getUserRecipes);
+
+ /**
+  * GET USER'S SINGLE RECIPES
+  */
+ router.get("/recipes/:id", UserController.getUserSingleRecipe);
+ 
+ /**
+  * CREATE USER'S RECIPE
+  */
+ router.post("/recipes", validate(validateRecipe), UserController.createRecipe);
+//  router.post("/recipes", UserController.createRecipe);
+ 
+ /**
+  * UPDATE USER'S RECIPE
+  */
+ router.patch("/recipes/:id", validate(validateRecipe), UserController.updateRecipe);
+ 
+ /**
+  * DELETE USER'S RECIPE
+  */
+ router.delete("/recipes/:id", UserController.deleteRecipe);
+ 
+ //#endregion
+
+
+
 
 //#region mealplans
 
@@ -39,6 +70,9 @@ router.delete("/mealplans/:id", UserController.deleteUserMealPlan);
 
 //#endregion
 
+//#region user
+
+
 //SENDING A LINK TO RESET PASSWORD
 router.post("/", UserController.resetUserPass);
 
@@ -51,37 +85,8 @@ router.post("/:id/:token", validate(validateUser), UserController.resetPass);
 //UPDATE USER
 router.put("/update", validate(validateUser), UserController.updateUser);
 
+//#endregion
 
-
-
-//#region recipes
-
-/**
- * GET USER'S RECIPES
- */
- router.get("/recipes", UserController.getUserRecipes);
-
- /**
-  * GET USER'S SINGLE RECIPES
-  */
- router.get("/recipes/:id", UserController.getSingleRecipe);
- 
- /**
-  * CREATE USER'S MEALPLAN
-  */
- router.post("/recipes", validate(validateMealPlan), UserController.createRecipe);
- 
- /**
-  * UPDATE ONE USERS'S MEALPLAN
-  */
- router.patch("/recipes/:id", validate(validateMealPlan), UserController.updateRecipe);
- 
- /**
-  * DELETE ONE USERS'S MEALPLAN
-  */
- router.delete("/recipes/:id", UserController.deleteRecipe);
- 
- //#endregion
 
 
 module.exports = router;

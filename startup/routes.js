@@ -29,4 +29,5 @@ module.exports = function (app) {
   app.use("/api/auth", authRouter);
 
   app.use(error);
+  // console.log(app._router)
 };
