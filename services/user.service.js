@@ -117,12 +117,11 @@ exports.updateRecipe = async(recipe_id, update_data) => {
 };
 
 exports.deleteRecipe = async(recipe_id) => {
-  const recipe = await Recipe.findById({ _id: id });
+  const recipe = await Recipe.findByIdAndDelete( recipe_id );
 if (!recipe) {
-  throw new NotFoundError("Meal plan doesn't exist");
+  throw new NotFoundError("Recipe not found. Perhaps it was already deleted");
 }
-await Recipe.deleteOne({ _id: id });
-return true;
+return recipe;
 };
 
 

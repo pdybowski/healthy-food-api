@@ -98,7 +98,7 @@ exports.updateRecipe = async(req,res,next) => {
 
 exports.deleteRecipe = async(req,res,next) => {
   try {
-      const recipe = UserService.deleteRecipe(req.params.id)
+      const recipe = await UserService.deleteRecipe(req.params.id)
       res.send(recipe)
   } catch (e) {
       
