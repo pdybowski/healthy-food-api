@@ -103,12 +103,16 @@ exports.createRecipe = async(req) => {
 
 exports.updateRecipe = async(recipe_id, update_data) => {
 
-  const recipe = await Recipe.findById({_id: recipe_id})
+  const recipe = await Recipe.findOneAndUpdate(
+    {_id: recipe_id},
+     update_data,
+    {new: true}
+    )
+
   if(!recipe)
   {
-      throw  new NotFoundError('Recipe not found')
+      // throw new NotFoundError('Recipe not found')
   }
-  await Recipe.findByIdAndUpdate({_id: recipe_id}, update_data, {new: true})
   return recipe
 };
 
