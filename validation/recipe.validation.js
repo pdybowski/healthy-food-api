@@ -6,7 +6,7 @@ const { MEAL_TYPES } = require("../constants")
 
 const validateRecipe = (recipe) => {
     const schema = Joi.object({
-        author: Joi.objectId().required(),
+        author: Joi.string().guid(),
         title: Joi.string().trim().max(100).required(),
         tags: Joi.array().items(Joi.string().max(10)),
         time: Joi.number().min(0).max(300),
