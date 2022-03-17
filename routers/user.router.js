@@ -5,7 +5,7 @@ const { authToken } = require("../middleware/auth");
 const validate = require("../middleware/validate");
 const validateMealPlan = require("../validation/meal-plan.validation");
 const validateUser = require("../validation/user.validation");
-const validateRecipe = require('../validation/recipe.validation')
+const {validateRecipe, validatePatchRecipe} = require('../validation/recipe.validation')
 
 
 //#region recipes
@@ -29,7 +29,7 @@ const validateRecipe = require('../validation/recipe.validation')
  /**
   * UPDATE USER'S RECIPE
   */
- router.patch("/recipes/:id", validate(validateRecipe), UserController.updateRecipe);
+ router.patch("/recipes/:id", validate(validatePatchRecipe), UserController.updateRecipe);
  
  /**
   * DELETE USER'S RECIPE
