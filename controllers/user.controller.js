@@ -1,9 +1,10 @@
+const Recipe = require("../models/recipe.model");
 const UserService = require("../services/user.service");
 
 // MEALPLANS
 
 exports.getAllUserMealPlans = async (req, res, next) => {
-  userId = req.user._id;
+  const userId = req.user._id;
   try {
     const mealPlans = await UserService.getUserMealPlans(userId);
     res.status(200).json(mealPlans);
@@ -51,7 +52,7 @@ exports.deleteUserMealPlan = async (req, res, next) => {
 // RECIPES
 
 
-exports.getUserRecipes = async (req, res, next) => {
+exports.getUserRecipes = async(req, res, next) => {
   try {
       const recipes = await UserService.getRecipes(req.user._id)
       res.send(recipes)
@@ -61,14 +62,18 @@ exports.getUserRecipes = async (req, res, next) => {
   }
 }
 
-exports.getSingleRecipe = async(req,res,next) => {
+exports.getUserSingleRecipe = async(req, res, next) => {
+  const _id = req.params.id
   try {
-      const recipe = await UserService.getRecipe(req.params.id)
-      res.send(recipe)
-  } catch (e) {
-      
-      next(e)
-  }
+    const recipe = await Recipe.findOne({ _id })
+
+    if (!recipe) {
+        return res.status(404).send()
+    }
+    res.send(recipe)
+} catch (e) {
+  next(e)
+}
 }
 
 exports.createRecipe = async(req,res,next) => {
