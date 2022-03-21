@@ -1,7 +1,10 @@
+const Recipe = require("../models/recipe.model");
 const UserService = require("../services/user.service");
 
+// MEALPLANS
+
 exports.getAllUserMealPlans = async (req, res, next) => {
-  userId = req.user._id;
+  const userId = req.user._id;
   try {
     const mealPlans = await UserService.getUserMealPlans(userId);
     res.status(200).json(mealPlans);
@@ -21,8 +24,8 @@ exports.getUserMealPlan = async (req, res, next) => {
 
 exports.createUserMealPlan = async (req, res, next) => {
   try {
-    const newMealPlan = await UserService.createUserMealPlan(req.body);
-    res.status(201).json(newMealPlan);
+    const newMealPlan = await UserService.createUserMealPlan({author: req.user._id, ...req.body}, );
+    res.status(201).send(newMealPlan);
   } catch (error) {
     next(error);
   }
@@ -30,8 +33,8 @@ exports.createUserMealPlan = async (req, res, next) => {
 
 exports.updateUserMealPlan = async (req, res, next) => {
   try {
-    await UserService.udpateUserMealPlan(req.params.id, req.body);
-    res.status(200).json({ message: "Updated meal plan" });
+    const mealPlan = await UserService.updateUserMealPlan(req.params.id, req.body);
+    res.status(200).json(mealPlan);
   } catch (error) {
     next(error);
   }
@@ -45,6 +48,65 @@ exports.deleteUserMealPlan = async (req, res, next) => {
     next(error);
   }
 };
+
+// RECIPES
+
+
+exports.getUserRecipes = async(req, res, next) => {
+  try {
+      const recipes = await UserService.getRecipes(req.user._id)
+      res.send(recipes)
+  } catch (e) {
+      
+      next(e)
+  }
+}
+
+exports.getUserSingleRecipe = async(req, res, next) => {
+  const _id = req.params.id
+  try {
+    const recipe = await Recipe.findOne({ _id })
+
+    if (!recipe) {
+        return res.status(404).send()
+    }
+    res.send(recipe)
+} catch (e) {
+  next(e)
+}
+}
+
+exports.createRecipe = async(req,res,next) => {
+  try {
+      const recipe = await UserService.createRecipe(req)
+      res.status(201).send(recipe)
+  } catch (e) {
+      
+      next(e)
+  }
+}
+
+exports.updateRecipe = async(req,res,next) => {
+  try {
+      const recipe = await UserService.updateRecipe(req.params.id,req.body)
+      res.status(200).send(recipe)
+  } catch (e) {
+      
+      next(e)
+  }
+}
+
+exports.deleteRecipe = async(req,res,next) => {
+  try {
+      const recipe = await UserService.deleteRecipe(req.params.id)
+      res.send(recipe)
+  } catch (e) {
+      
+      next(e)
+  }
+}
+
+// USER
 
 exports.resetUserPass = async (req, res, next) => {
   const { email } = req.body;

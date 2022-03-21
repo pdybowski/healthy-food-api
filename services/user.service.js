@@ -1,8 +1,13 @@
 const MealPlan = require("../models/meal-plan.model");
-const { NotFoundError, UnauthorizedError } = require("../helpers/errorHandlers");
+const { NotFoundError, UnauthorizedError, BadRequestError } = require("../helpers/errorHandlers");
 const User = require("../models/user.model");
+const Recipe = require('../models/recipe.model')
 const jwt = require("jsonwebtoken");
 const { authToken } = require("../middleware/auth");
+
+/*
+MEALPLANS
+*/
 
 exports.getUserMealPlans = async (userId) => {
   const mealPlan = await MealPlan.find({ author: userId });
@@ -20,15 +25,14 @@ exports.getUserMealPlan = async (id) => {
   return mealPlan;
 };
 
-exports.udpateUserMealPlan = async (id, reqBody) => {
-  const mealPlan = await MealPlan.findById({ _id: id });
+exports.updateUserMealPlan = async (id, reqBody) => {
+  const mealPlan = await MealPlan.findByIdAndUpdate({ _id: id }, reqBody, {
+    new: true,
+  });
   if (!mealPlan) {
     throw new NotFoundError("Meal plan doesn't exist");
   }
-  await MealPlan.findByIdAndUpdate({ _id: id }, reqBody, {
-    new: true,
-  });
-  return true;
+  return mealPlan;
 };
 
 exports.deleteUserMealPlan = async (id) => {
@@ -41,6 +45,7 @@ exports.deleteUserMealPlan = async (id) => {
 };
 
 exports.createUserMealPlan = async (reqBody) => {
+  console.log('createUserMealPlan ', reqBody)
   const mealPlan = new MealPlan({
     days: reqBody.days,
     mealType: reqBody.mealType,
@@ -54,6 +59,73 @@ exports.createUserMealPlan = async (reqBody) => {
   return await mealPlan.save();
 };
 
+/*
+RECIPES
+*/
+
+exports.getUserRecipe = async(id) => {
+  console.log('service ', id)
+  const recipe = await Recipe.find({ _id: id });
+  if (!recipe) {
+    throw new NotFoundError("Recipe not found");
+  }
+  return recipe;
+}
+
+exports.getRecipes = async(user_id) => {
+  const recipes = await Recipe.find({author: user_id})
+  if (!recipes) {
+      throw new NotFoundError('No recipes found')
+  }
+  return recipes
+}
+
+exports.createRecipe = async(req) => {
+  const author = req.user._id
+  const recipe = new Recipe({
+      title: req.body.title,
+      tags: req.body.tags,
+      time: req.body.time,
+      mealType: req.body.mealType,
+      ingredients: req.body.ingredients,
+      description: req.body.description,
+      recipe: req.body.recipe,
+      img: req.body.img,
+      peopleNumber: req.body.peopleNumber,
+      likes: req.body.likes,
+      author: author
+  })
+  await recipe.save()
+  return recipe
+};
+
+exports.updateRecipe = async(recipe_id, update_data) => {
+
+  const recipe = await Recipe.findOneAndUpdate(
+    {_id: recipe_id},
+     update_data,
+    {new: true}
+    )
+
+  if(!recipe)
+  {
+      // throw new NotFoundError('Recipe not found')
+  }
+  return recipe
+};
+
+exports.deleteRecipe = async(recipe_id) => {
+  const recipe = await Recipe.findByIdAndDelete( recipe_id );
+if (!recipe) {
+  throw new NotFoundError("Recipe not found. Perhaps it was already deleted");
+}
+return recipe;
+};
+
+
+/*
+USER
+*/
 exports.resetUserPassLink = async (email) => {
   const user = await User.findOne({ email: email });
   if (!user) {
