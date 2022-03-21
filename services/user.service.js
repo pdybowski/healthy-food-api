@@ -175,6 +175,13 @@ exports.updateUser = async (body) => {
   );
 };
 
-
+exports.deleteUser = async (id) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new NotFoundError('User doesn\'t exist');
+  }
+  await User.deleteOne({ _id: id });
+  return true;
+};
 
 
